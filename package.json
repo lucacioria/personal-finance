@@ -5,7 +5,8 @@
   "main": "scraper.js",
   "dependencies": {
     "json2csv": "^5.0.0",
-    "puppeteer": "^2.1.1"
+    "puppeteer": "^2.1.1",
+    "axios": "^0.19.2"
   },
   "devDependencies": {},
   "scripts": {
