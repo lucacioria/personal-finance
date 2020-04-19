@@ -28,12 +28,12 @@ function parseInvestments(APIinvestments) {
 }
 
 function writeOutputToJSON(
-  filename = "soisy-output.json",
+  filename = "soisy.json",
   parsedInvestments,
   rawAPIInvestments
 ) {
   const rawOutput = {
-    parsedInvestments,
+    moneyAtRisk: parsedInvestments,
     rawInvestments: rawAPIInvestments,
     date: new Date().toUTCString(),
   };

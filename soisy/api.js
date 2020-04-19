@@ -49,7 +49,9 @@ function login(username, password) {
 
 async function getInvestments() {
   const token = credentials.getToken("soisy");
-
+  if(!token) {
+    return Promise.reject(401);
+  }
   const investmentsRes = await axios
     .get(
       "https://api.soisy.it/api/users/770e0766-6c16-3f90-9318-b53952179708/investments",
