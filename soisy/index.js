@@ -16,7 +16,7 @@ async function run() {
   }
 
   const parsedInvestments = soisy.parseInvestments(rawAPIInvestments);
-  soisy.writeOutputToJSON(undefined, parsedInvestments, rawAPIInvestments);
+  soisy.writeOutputToSDOUT(parsedInvestments, rawAPIInvestments);
 }
 
 module.exports = {

@@ -41,7 +41,18 @@ function writeOutputToJSON(
   fs.writeFileSync(`./${filename}`, JSON.stringify(rawOutput));
 }
 
+function writeOutputToSDOUT(parsedInvestments, rawAPIInvestments) {
+  const rawOutput = {
+    moneyAtRisk: parsedInvestments,
+    rawInvestments: rawAPIInvestments,
+    date: new Date().toUTCString(),
+  };
+
+  console.log(JSON.stringify(rawOutput));
+}
+
 module.exports = {
   parseInvestments,
   writeOutputToJSON,
+  writeOutputToSDOUT,
 };
