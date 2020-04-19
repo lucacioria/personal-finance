@@ -1,5 +1,4 @@
 const puppeteer = require('puppeteer');
-const { Parser } = require('json2csv');
 const fs = require('fs');
 
 
@@ -35,9 +34,6 @@ const fs = require('fs');
       return {ISIN: ISINs[i], name: names[i], quantity: quantities[i], currency: currencies[i], geography: geographies[i], TER: TERs[i], price: prices[i], avgOriginalPrice: avgOriginalPrices[i]};
     });
   });
-  const parser = new Parser(Object.keys(data[0]));
-  const csv = parser.parse(data);
-  console.log(csv);
-  await page.screenshot({path: 'moneyfarm.png'});
+  console.log(JSON.stringify(data));
   await browser.close();
 })();
