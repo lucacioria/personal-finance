@@ -1,18 +1,20 @@
 const axios = require("axios").default;
 const credentials = require("./credential.js");
 
-// axios.interceptors.response.use(response => {
-//   return response;
-// }, error => {
-//   if (error.response.status === 401) {
-
-//   }
-//   return error;
-// });
+axios.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response.status === 401) {
+      return Promise.reject(error.response.status);
+    }
+    return Promise.reject(error);
+  }
+);
 
 function login(username, password) {
   const loginCred = credentials.getCredentials("soisy");
-  console.log("[Soisy module] Logging in...");
   return axios
     .post(
       "https://api.soisy.it/api/users/authenticate",
@@ -32,27 +34,22 @@ function login(username, password) {
     .then((res) => {
       if (res.token) {
         credentials.saveToken(res.token);
-        console.log("[Soisy module] New token got. ");
         return Promise.resolve();
       } else {
         return Promise.reject();
-      }
-    })
-    .catch((error) => {
-      if (error.response) {
-        return Promise.reject(error.response.status);
-      } else {
-        return Promise.reject(error);
       }
     });
 }
 
 async function getInvestments() {
-  const token = credentials.getToken("soisy");
-  if(!token) {
-    return Promise.reject(401);
+  let token = credentials.getToken("soisy");
+  if (!token) {
+    await login().then(() => {
+      token = credentials.getToken("soisy");
+    });
   }
-  const investmentsRes = await axios
+
+  return axios
     .get(
       "https://api.soisy.it/api/users/770e0766-6c16-3f90-9318-b53952179708/investments",
       {
@@ -66,16 +63,7 @@ async function getInvestments() {
         },
       }
     )
-    .then((res) => res.data)
-    .catch((error) => {
-      if (error.response) {
-        return Promise.reject(error.response.status);
-      } else {
-        return Promise.reject(error);
-      }
-    });
-
-  return investmentsRes;
+    .then((res) => res.data);
 }
 
 module.exports = {
